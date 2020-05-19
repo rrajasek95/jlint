@@ -1,6 +1,4 @@
-package com.rrajasek.jlint.lint;
-
-import com.rrajasek.jlint.lint.engine.SourceCode;
+package com.rrajasek.jlint.lint.linter;
 
 public class LinterTraversalContextBase implements LinterTraversalContext {
     public void getAncestors() {

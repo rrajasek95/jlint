@@ -1,4 +1,4 @@
-package com.rrajasek.jlint.lint.engine;
+package com.rrajasek.jlint.lint.linter;
 
 public class LintInput {
     String text;

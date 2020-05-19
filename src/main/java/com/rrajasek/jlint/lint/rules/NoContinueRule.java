@@ -1,6 +1,9 @@
 package com.rrajasek.jlint.lint.rules;
 
-import com.rrajasek.jlint.lint.RuleContext;
+import com.rrajasek.jlint.lint.linter.LintReport;
+import com.rrajasek.jlint.lint.linter.Location;
+import com.rrajasek.jlint.lint.linter.RuleContext;
+import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.ArrayList;
@@ -12,10 +15,22 @@ public class NoContinueRule implements Rule{
             super("ContinueStatement", ruleContext);
         }
 
+        private Location continueLocation(ParserRuleContext parserRuleContext) {
+            Location location = new Location();
+            location.line = parserRuleContext.start.getLine();
+            location.column = parserRuleContext.start.getCharPositionInLine();
+
+            return location;
+        }
         @Override
         public void act(ParserRuleContext parserRuleContext) {
             System.out.println("Rule violation! NoContinue");
-            ruleContext.report();
+            LintReport report = new LintReport();
+
+            report.setNodeType("ContinueStatement");
+            report.setLocation(continueLocation(parserRuleContext));
+            report.setMessage("No continue allowed");
+            ruleContext.report(report);
         }
     }
 

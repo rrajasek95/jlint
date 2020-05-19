@@ -1,4 +1,4 @@
-package com.rrajasek.jlint.lint.rules;
+package com.rrajasek.jlint.lint.linter;
 
 public enum Severity {
     DISABLED,

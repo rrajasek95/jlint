@@ -1,8 +1,9 @@
 package com.rrajasek.jlint.lint.rules;
 
 import com.rrajasek.jlint.java.Java8Parser;
-import com.rrajasek.jlint.lint.RuleContext;
-import com.rrajasek.jlint.lint.engine.LintMessage;
+import com.rrajasek.jlint.lint.linter.LintReport;
+import com.rrajasek.jlint.lint.linter.Location;
+import com.rrajasek.jlint.lint.linter.RuleContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -20,9 +21,28 @@ public class AccessorPairRule implements Rule {
             return terminalNode.getText().startsWith("set");
         }
 
+        private Location functionDeclarationLocation(Java8Parser.MethodHeaderContext methodHeaderContext) {
+            Location location = new Location();
+            location.line = methodHeaderContext.start.getLine();
+            location.column = methodHeaderContext.start.getCharPositionInLine();
+
+            return location;
+        }
+
+        private void report(Java8Parser.MethodHeaderContext method, String violation) {
+            LintReport report = new LintReport();
+            report.setMessage(violation + "InNormalClassDeclaration");
+            report.setLocation(functionDeclarationLocation(method));
+            report.setNodeType(getNodeType());
+
+            ruleContext.report(report);
+        }
+
         private void reportList(List<Java8Parser.MethodHeaderContext> methods, String violation) {
-            System.out.println("Rule violation! AccessorPairRule");
-            this.ruleContext.report();
+
+            for (Java8Parser.MethodHeaderContext method: methods) {
+                report(method, violation);
+            }
         }
 
         private void checkList(List<Java8Parser.MethodHeaderContext> methods) {
@@ -39,7 +59,7 @@ public class AccessorPairRule implements Rule {
             }
 
             if (getters.size() > setters.size()) {
-                reportList(getters, "missingSetter");;
+                reportList(getters, "missingSetter");
             } else if (setters.size() > getters.size()) {
                 reportList(setters, "missingGetter");
             }
@@ -51,7 +71,6 @@ public class AccessorPairRule implements Rule {
 
         public void checkClassBody(Java8Parser.NormalClassDeclarationContext normalClassDeclarationContext) {
             List<Java8Parser.ClassBodyDeclarationContext> classBodyDeclarationContexts = normalClassDeclarationContext.classBody().classBodyDeclaration();
-
             List<Java8Parser.MethodHeaderContext> methods = new ArrayList<>();
 
             for (Java8Parser.ClassBodyDeclarationContext classBody : classBodyDeclarationContexts) {

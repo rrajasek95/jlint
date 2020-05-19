@@ -1,8 +1,6 @@
-package com.rrajasek.jlint.lint;
+package com.rrajasek.jlint.lint.linter;
 
-import com.rrajasek.jlint.java.Java8Parser;
 import com.rrajasek.jlint.java.Java8ParserBaseListener;
-import com.rrajasek.jlint.lint.engine.LintMessage;
 import com.rrajasek.jlint.lint.rules.RuleListener;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -11,10 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class LinterListener extends Java8ParserBaseListener {
-    // This listener is doing double duty as an emitter and listener
-
-    final List<LintMessage> problems = new ArrayList<>();
-
     private HashMap<String, List<RuleListener>> registeredListeners = new HashMap<>();
 
     public void register(String selector, RuleListener listener) {
@@ -33,6 +27,9 @@ public class LinterListener extends Java8ParserBaseListener {
 
     @Override
     public void enterEveryRule(ParserRuleContext ctx) {
+        // This listener listens for all node traversal events and delegates
+        // the action to respective rule specific listeners that
+        // match a specific selector
         String selector = ctx.getClass().getSimpleName();
         applyOnSelector(selector, ctx);
         super.enterEveryRule(ctx);
@@ -41,9 +38,5 @@ public class LinterListener extends Java8ParserBaseListener {
     @Override
     public void exitEveryRule(ParserRuleContext ctx) {
         super.exitEveryRule(ctx);
-    }
-
-    public List<LintMessage> getProblems() {
-        return problems;
     }
 }

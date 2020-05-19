@@ -1,6 +1,6 @@
 package com.rrajasek.jlint.lint.rules;
 
-import com.rrajasek.jlint.lint.RuleContext;
+import com.rrajasek.jlint.lint.linter.RuleContext;
 
 import java.util.List;
 

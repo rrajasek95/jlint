@@ -1,4 +1,6 @@
-package com.rrajasek.jlint.lint.engine;
+package com.rrajasek.jlint.lint.linter;
+
+import java.util.List;
 
 public class LintResult {
     private String filePath;
@@ -6,6 +8,10 @@ public class LintResult {
     private int errorCount;
     private int warningCount;
     private String source;
+
+    public LintResult(List<LintMessage> messageList) {
+        this.messages = messageList.toArray(new LintMessage[] {});
+    }
 
     public String getFilePath() {
         return filePath;

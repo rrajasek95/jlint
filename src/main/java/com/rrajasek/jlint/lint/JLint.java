@@ -1,25 +1,17 @@
 package com.rrajasek.jlint.lint;
 
-import com.rrajasek.jlint.java.Java8Lexer;
-import com.rrajasek.jlint.java.Java8Parser;
 import com.rrajasek.jlint.lint.engine.CommandLineEngine;
-import com.rrajasek.jlint.lint.engine.LintResult;
+import com.rrajasek.jlint.lint.linter.LintResult;
 import com.rrajasek.jlint.lint.engine.formatters.LintResultFormatter;
 import com.rrajasek.jlint.lint.engine.formatters.ResultFormat;
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class JLint {
     private static LintOptions parseOptions() {
@@ -79,21 +71,19 @@ public class JLint {
 
     public static void main(String[] args) {
         Logger logger = LoggerFactory.getLogger(JLint.class);
-
-        CommandLineEngine engine = new CommandLineEngine();
-        LintResult[] results = engine.lintFiles();
-
-        engine.executeOnText("public class Test { public bool getName() { return true; } public void setName() { return; } } ");
-
         LintOptions options = parseOptions();
+        CommandLineEngine engine = new CommandLineEngine();
+//        LintResult[] results = engine.lintFiles();
+
+        List<LintResult> resultsList = engine.executeOnText("public class Test { public bool getName() { continue; return true; } public void setName() { return; } } ");
+        LintResult[] results = resultsList.toArray(new LintResult[] {});
+
         if (outputResults(engine, results, ResultFormat.JSON, Paths.get("results.json"))) {
             LintIssueCount counts = countLintIssues(results);
 
             if (counts.errorCount == 0 && counts.warningCount > options.getMaxWarnings()) {
                 logger.error("JLint found too many warnings: {}", options.getMaxWarnings());
             }
-        } else {
-
         }
     }
 }

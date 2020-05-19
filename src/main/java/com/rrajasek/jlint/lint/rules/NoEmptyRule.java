@@ -1,7 +1,7 @@
 package com.rrajasek.jlint.lint.rules;
 
 import com.rrajasek.jlint.java.Java8Parser;
-import com.rrajasek.jlint.lint.RuleContext;
+import com.rrajasek.jlint.lint.linter.RuleContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.ArrayList;

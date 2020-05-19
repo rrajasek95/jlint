@@ -1,11 +1,7 @@
-package com.rrajasek.jlint.lint.engine;
+package com.rrajasek.jlint.lint.linter;
 
 import com.rrajasek.jlint.java.Java8Lexer;
 import com.rrajasek.jlint.java.Java8Parser;
-import com.rrajasek.jlint.lint.LinterListener;
-import com.rrajasek.jlint.lint.LinterTraversalContext;
-import com.rrajasek.jlint.lint.LinterTraversalContextBase;
-import com.rrajasek.jlint.lint.RuleContext;
 import com.rrajasek.jlint.lint.rules.Rule;
 import com.rrajasek.jlint.lint.rules.RuleListener;
 import org.antlr.v4.runtime.CharStream;
@@ -16,6 +12,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +81,8 @@ public class Linter {
         configuredRules.put("no-continue", "SDSDSDSDSDSD");
 
         LinterTraversalContext linterTraversalContext = new LinterTraversalContextBase();
+
+        List<LintMessage> messages = new ArrayList<>();
         for (Map.Entry<String, String> ruleEntry: configuredRules.entrySet()) {
             String ruleId = ruleEntry.getKey();
             Rule rule = ruleRegistry.getRule(ruleId);
@@ -91,7 +90,7 @@ public class Linter {
             if (rule == null)
                 continue;
 
-            RuleContext ruleContext = new RuleContext(linterTraversalContext, ruleId);
+            RuleContext ruleContext = new RuleContext(linterTraversalContext, ruleId, messages);
             List<RuleListener> listeners = rule.create(ruleContext);
 
             for (RuleListener listener : listeners) {
@@ -100,6 +99,6 @@ public class Linter {
         }
         walker.walk(linterListener, sourceCode.getAst());
 
-        return linterListener.getProblems();
+        return messages;
     }
 }

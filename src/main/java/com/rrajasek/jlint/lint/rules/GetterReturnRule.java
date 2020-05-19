@@ -1,7 +1,7 @@
 package com.rrajasek.jlint.lint.rules;
 
 import com.rrajasek.jlint.java.Java8Parser;
-import com.rrajasek.jlint.lint.RuleContext;
+import com.rrajasek.jlint.lint.linter.RuleContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -17,7 +17,7 @@ public class GetterReturnRule implements Rule {
 
         private void reportList(List<Java8Parser.MethodHeaderContext> methods, String violation) {
             System.out.println("Rule violation! GetterReturnRule");
-            this.ruleContext.report();
+//            this.ruleContext.report();
         }
 
         private boolean isGetter(TerminalNode terminalNode) {

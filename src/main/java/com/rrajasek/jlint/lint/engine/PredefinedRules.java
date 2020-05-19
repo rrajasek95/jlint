@@ -14,6 +14,8 @@ public class PredefinedRules {
         predefinedRules.put("no-setter-return", new NoSetterReturnRule());
         predefinedRules.put("getter-return", new GetterReturnRule());
         predefinedRules.put("no-empty", new NoEmptyRule());
+        predefinedRules.put("no-continue", new NoContinueRule());
+        predefinedRules.put("no-console-print", new NoConsolePrintRule());
     }
     public static Map<String, Rule> getPredefinedRules() {
         return predefinedRules;

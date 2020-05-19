@@ -80,6 +80,8 @@ public class Linter {
         configuredRules.put("no-setter-return", "Blaaaaw");
         configuredRules.put("getter-return", "TEST");
         configuredRules.put("no-empty", "TEST");
+        configuredRules.put("no-console-print", "SSSDSD");
+        configuredRules.put("no-continue", "SDSDSDSDSDSD");
 
         LinterTraversalContext linterTraversalContext = new LinterTraversalContextBase();
         for (Map.Entry<String, String> ruleEntry: configuredRules.entrySet()) {

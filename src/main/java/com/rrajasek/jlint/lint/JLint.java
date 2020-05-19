@@ -22,6 +22,35 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class JLint {
+    private static LintOptions parseOptions() {
+        return new LintOptions();
+    }
+
+    private static class LintIssueCount {
+        private int errorCount;
+        private int warningCount;
+
+        public LintIssueCount(int errorCount, int warningCount) {
+            this.errorCount = errorCount;
+            this.warningCount = warningCount;
+        }
+
+        public int getErrorCount() {
+            return errorCount;
+        }
+
+        public int getWarningCount() {
+            return warningCount;
+        }
+    }
+
+    private static class LintOptions {
+        private int maxWarnings = 1000000;
+
+        public int getMaxWarnings() {
+            return maxWarnings;
+        }
+    }
 
     private static boolean outputResults(CommandLineEngine engine, LintResult[] results,
                                ResultFormat format, Path outputFilePath) {
@@ -52,8 +81,9 @@ public class JLint {
         Logger logger = LoggerFactory.getLogger(JLint.class);
 
         CommandLineEngine engine = new CommandLineEngine();
-//        engine.parseFile(args[0]);
         LintResult[] results = engine.lintFiles();
+
+        engine.executeOnText("public class Test { public bool setName() {  } } ");
 
         LintOptions options = parseOptions();
         if (outputResults(engine, results, ResultFormat.JSON, Paths.get("results.json"))) {
@@ -64,37 +94,6 @@ public class JLint {
             }
         } else {
 
-        }
-    }
-
-    private static LintOptions parseOptions() {
-
-        return new LintOptions();
-    }
-
-    private static class LintIssueCount {
-        private int errorCount;
-        private int warningCount;
-
-        public LintIssueCount(int errorCount, int warningCount) {
-            this.errorCount = errorCount;
-            this.warningCount = warningCount;
-        }
-
-        public int getErrorCount() {
-            return errorCount;
-        }
-
-        public int getWarningCount() {
-            return warningCount;
-        }
-    }
-
-    private static class LintOptions {
-        private int maxWarnings = -1;
-
-        public int getMaxWarnings() {
-            return maxWarnings;
         }
     }
 }

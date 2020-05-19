@@ -1,0 +1,9 @@
+package com.rrajasek.jlint.lint.rules;
+
+import com.rrajasek.jlint.lint.RuleContext;
+
+import java.util.List;
+
+public interface Rule {
+    List<RuleListener> create(RuleContext ruleContext);
+}

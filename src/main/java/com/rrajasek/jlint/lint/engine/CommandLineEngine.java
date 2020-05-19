@@ -1,27 +1,32 @@
 package com.rrajasek.jlint.lint.engine;
 
-import com.rrajasek.jlint.java.Java8Lexer;
-import com.rrajasek.jlint.java.Java8Parser;
-import com.rrajasek.jlint.lint.LinterListener;
 import com.rrajasek.jlint.lint.engine.formatters.JsonFormatter;
 import com.rrajasek.jlint.lint.engine.formatters.LintResultFormatter;
 import com.rrajasek.jlint.lint.engine.formatters.ResultFormat;
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommandLineEngine {
+    private final Linter linter;
+
+    public CommandLineEngine() {
+        linter = new Linter();
+    }
+
     public LintResultFormatter loadFormatter(ResultFormat format) {
         return new JsonFormatter();
     }
 
-    public LintResult[] lintText() {
+    public List<LintResult> executeOnText(String text) {
+        List<LintResult> results = new ArrayList<>();
+
         LintResult res = new LintResult();
-        return new LintResult[]{ res };
+        LintInput input = new LintInput();
+        input.setText(text);
+        results.add(verifyText(input));
+
+        return results;
     }
 
     public LintResult[] lintFiles() {
@@ -29,22 +34,20 @@ public class CommandLineEngine {
         return new LintResult[]{ res };
     }
 
-    public void parseFile(String s) {
-        try {
-            //
-            CharStream antlrInputStream = CharStreams.fromFileName(s);
-            Java8Lexer java8Lexer = new Java8Lexer(antlrInputStream);
-            CommonTokenStream tokenStream = new CommonTokenStream(java8Lexer);
-            Java8Parser java8Parser = new Java8Parser(tokenStream);
-            ParseTree compilationUnit = java8Parser.compilationUnit();
 
-            ParseTreeWalker walker = new ParseTreeWalker();
-            LinterListener linterListener = new LinterListener();
 
-            walker.walk(linterListener, compilationUnit);
+    private LintResult verifyText(LintInput input) {
+        String text = input.getText();
+        linter.verify(text);
+        return new LintResult();
+    }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+    private List<LintResult> executeOnFiles() {
+        List<LintResult> results = new ArrayList<>();
+
+        results.add(verifyText(new LintInput()));
+
+        return results;
     }
 }

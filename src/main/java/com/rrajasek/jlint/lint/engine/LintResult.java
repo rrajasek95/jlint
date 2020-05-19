@@ -1,7 +1,5 @@
 package com.rrajasek.jlint.lint.engine;
 
-import com.rrajasek.jlint.lint.LintMessage;
-
 public class LintResult {
     private String filePath;
     private LintMessage[] messages;

@@ -78,6 +78,8 @@ public class Linter {
         configuredRules.put("accessor-pairs", "Blah");
         configuredRules.put("no-constant-condition", "Bluh");
         configuredRules.put("no-setter-return", "Blaaaaw");
+        configuredRules.put("getter-return", "TEST");
+        configuredRules.put("no-empty", "TEST");
 
         LinterTraversalContext linterTraversalContext = new LinterTraversalContextBase();
         for (Map.Entry<String, String> ruleEntry: configuredRules.entrySet()) {

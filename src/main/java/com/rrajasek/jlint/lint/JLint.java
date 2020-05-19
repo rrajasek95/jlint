@@ -83,7 +83,7 @@ public class JLint {
         CommandLineEngine engine = new CommandLineEngine();
         LintResult[] results = engine.lintFiles();
 
-        engine.executeOnText("public class Test { public bool setName() {  } } ");
+        engine.executeOnText("public class Test { public bool getName() { return true; } public void setName() { return; } } ");
 
         LintOptions options = parseOptions();
         if (outputResults(engine, results, ResultFormat.JSON, Paths.get("results.json"))) {

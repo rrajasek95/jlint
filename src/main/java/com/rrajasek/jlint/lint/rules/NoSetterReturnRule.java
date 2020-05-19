@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NoSetterReturnRule implements Rule {
-    class NoSetterReturnListener extends RuleListenerBase {
+    private static class NoSetterReturnListener extends RuleListenerBase {
 
         public NoSetterReturnListener(RuleContext ruleContext) {
             super("NormalClassDeclaration", ruleContext);
         }
 
         private void reportList(List<Java8Parser.MethodHeaderContext> methods, String violation) {
-            System.out.println("Rule violation!");
+            System.out.println("Rule violation! NoSetterReturnRule");
             this.ruleContext.report();
         }
 
@@ -25,8 +25,6 @@ public class NoSetterReturnRule implements Rule {
         }
 
         private void checkList(List<Java8Parser.MethodHeaderContext> methods) {
-
-            List<Java8Parser.MethodHeaderContext> getters = new ArrayList<>();
             List<Java8Parser.MethodHeaderContext> setters = new ArrayList<>();
             for (Java8Parser.MethodHeaderContext method: methods) {
                 TerminalNode identifier = method.methodDeclarator().Identifier();
@@ -35,7 +33,6 @@ public class NoSetterReturnRule implements Rule {
                     setters.add(method);
                 }
             }
-
             if (!setters.isEmpty()) {
                 reportList(setters, "noSetterReturn");
             }

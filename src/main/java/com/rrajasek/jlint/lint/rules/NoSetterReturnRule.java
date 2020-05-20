@@ -55,7 +55,6 @@ public class NoSetterReturnRule implements Rule {
 
         @Override
         public void act(ParserRuleContext parserRuleContext) {
-            System.out.println("NoSetterReturn");
             checkSetterReturns((Java8Parser.NormalClassDeclarationContext) parserRuleContext);
         }
     }

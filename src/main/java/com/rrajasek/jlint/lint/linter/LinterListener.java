@@ -12,7 +12,6 @@ public class LinterListener extends Java8ParserBaseListener {
     private HashMap<String, List<RuleListener>> registeredListeners = new HashMap<>();
 
     public void register(String selector, RuleListener listener) {
-        System.out.println("Registering " + listener.getNodeType());
         List<RuleListener> listeners = registeredListeners.computeIfAbsent(selector + "Context", (k) -> new ArrayList<>());
         listeners.add(listener);
     }
@@ -20,7 +19,6 @@ public class LinterListener extends Java8ParserBaseListener {
     private void applyOnSelector(String selector, ParserRuleContext ctx) {
         List<RuleListener> listeners = registeredListeners.get(selector);
         if (listeners != null) {
-            System.out.println(selector);
             listeners.forEach(listener -> listener.act(ctx));
         }
     }

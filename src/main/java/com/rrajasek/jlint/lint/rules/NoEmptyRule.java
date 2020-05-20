@@ -17,7 +17,6 @@ public class NoEmptyRule implements Rule {
 
         public void checkBlock(Java8Parser.BlockContext blockContext) {
             if (blockContext.blockStatements() == null) {
-                System.out.println("Rule violation! NoEmpty");
             }
         }
 

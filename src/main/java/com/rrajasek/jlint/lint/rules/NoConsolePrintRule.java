@@ -19,7 +19,7 @@ public class NoConsolePrintRule implements Rule {
 
         private void checkStatement(Java8Parser.MethodInvocationContext methodInvocationContext) {
             if (SYS_OUT_PRINT_PATTERN.matcher(methodInvocationContext.getText()).matches()) {
-                System.out.println("Rule violation! No console prints");
+//                System.out.println("Rule violation! No console prints");
             }
         }
 

@@ -24,7 +24,6 @@ public class NoContinueRule implements Rule{
         }
         @Override
         public void act(ParserRuleContext parserRuleContext) {
-            System.out.println("Rule violation! NoContinue");
             LintReport report = new LintReport();
 
             report.setNodeType("ContinueStatement");

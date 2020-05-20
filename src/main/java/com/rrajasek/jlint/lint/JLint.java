@@ -48,11 +48,15 @@ public class JLint {
                                ResultFormat format, Path outputFilePath) {
         LintResultFormatter formatter = engine.loadFormatter(format);
         String output = formatter.formatResult(results);
-        try {
-            Files.write(outputFilePath, output.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+        if (outputFilePath != null) {
+            try {
+                Files.write(outputFilePath, output.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            System.out.println(output);
         }
         return true;
     }
@@ -78,7 +82,7 @@ public class JLint {
         List<LintResult> resultsList = engine.executeOnText("public class Test { public bool getName() { continue; return true; } public void setName() { return; } } ");
         LintResult[] results = resultsList.toArray(new LintResult[] {});
 
-        if (outputResults(engine, results, ResultFormat.JSON, Paths.get("results.json"))) {
+        if (outputResults(engine, results, ResultFormat.JSON, null)) {
             LintIssueCount counts = countLintIssues(results);
 
             if (counts.errorCount == 0 && counts.warningCount > options.getMaxWarnings()) {

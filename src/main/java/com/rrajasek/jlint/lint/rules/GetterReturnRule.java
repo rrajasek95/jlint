@@ -16,7 +16,6 @@ public class GetterReturnRule implements Rule {
         }
 
         private void reportList(List<Java8Parser.MethodHeaderContext> methods, String violation) {
-            System.out.println("Rule violation! GetterReturnRule");
 //            this.ruleContext.report();
         }
 
@@ -56,7 +55,6 @@ public class GetterReturnRule implements Rule {
 
         @Override
         public void act(ParserRuleContext parserRuleContext) {
-            System.out.println("GetterReturnRule");
             checkGetterReturns((Java8Parser.NormalClassDeclarationContext) parserRuleContext);
         }
     }

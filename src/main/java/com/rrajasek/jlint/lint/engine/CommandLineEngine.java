@@ -3,6 +3,7 @@ package com.rrajasek.jlint.lint.engine;
 import com.rrajasek.jlint.lint.engine.formatters.JsonFormatter;
 import com.rrajasek.jlint.lint.engine.formatters.LintResultFormatter;
 import com.rrajasek.jlint.lint.engine.formatters.ResultFormat;
+import com.rrajasek.jlint.lint.engine.formatters.UnixFormatter;
 import com.rrajasek.jlint.lint.linter.LintInput;
 import com.rrajasek.jlint.lint.linter.LintMessage;
 import com.rrajasek.jlint.lint.linter.LintResult;
@@ -20,7 +21,7 @@ public class CommandLineEngine {
     }
 
     public LintResultFormatter loadFormatter(ResultFormat format) {
-        return new JsonFormatter();
+        return new UnixFormatter();
     }
 
     public List<LintResult> executeOnText(String text) {

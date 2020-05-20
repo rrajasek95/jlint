@@ -33,4 +33,24 @@ public class LintMessage {
         this.column = column + 1;
         this.nodeType = nodeType;
     }
+
+    public int getLine() {
+        return line;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getRuleId() {
+        return ruleId;
+    }
+
+    public Severity getSeverity() {
+        return severity;
+    }
 }

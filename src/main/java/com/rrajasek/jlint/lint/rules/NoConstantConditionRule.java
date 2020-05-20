@@ -20,7 +20,7 @@ public class NoConstantConditionRule implements Rule {
             if (conditional != null) {
                 boolean isConstant = "true".equals(conditional.getText()) || "false".equals(conditional.getText());
                 if (isConstant) {
-                    System.out.println("violation!");
+//                    System.out.println("violation!");
                 }
             }
         }

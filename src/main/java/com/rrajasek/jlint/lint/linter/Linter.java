@@ -86,7 +86,6 @@ public class Linter {
         for (Map.Entry<String, String> ruleEntry: configuredRules.entrySet()) {
             String ruleId = ruleEntry.getKey();
             Rule rule = ruleRegistry.getRule(ruleId);
-            System.out.println(ruleId);
             if (rule == null)
                 continue;
 

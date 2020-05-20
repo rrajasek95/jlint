@@ -1,6 +1,8 @@
 package com.rrajasek.jlint.lint.rules;
 
 import com.rrajasek.jlint.java.Java8Parser;
+import com.rrajasek.jlint.lint.linter.LintReport;
+import com.rrajasek.jlint.lint.linter.Location;
 import com.rrajasek.jlint.lint.linter.RuleContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -14,13 +16,26 @@ public class NoConstantConditionRule implements Rule {
             super(selector, ruleContext);
         }
 
+        private Location constantLocation(Java8Parser.ConditionalExpressionContext conditionalExpressionContext) {
+            Location location = new Location();
+            location.line = conditionalExpressionContext.start.getLine();
+            location.column = conditionalExpressionContext.start.getCharPositionInLine();
+
+            return location;
+        }
+
         private void checkConditionConstant(Java8Parser.ExpressionContext context) {
             Java8Parser.ConditionalExpressionContext conditional = context.assignmentExpression().conditionalExpression();
 
             if (conditional != null) {
                 boolean isConstant = "true".equals(conditional.getText()) || "false".equals(conditional.getText());
                 if (isConstant) {
-//                    System.out.println("violation!");
+                    LintReport report = new LintReport();
+                    report.setMessage("ConstantInConditionalExpression");
+                    report.setLocation(constantLocation(conditional));
+                    report.setNodeType(getNodeType());
+
+                    ruleContext.report(report);
                 }
             }
         }

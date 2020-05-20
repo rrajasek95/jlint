@@ -11,8 +11,6 @@ public class LintMessage {
     private String ruleId;
     private Severity severity;
     private String nodeType;
-    // TODO: implement severity (enum?)
-    // TODO: implement suggestions; not a priority
 
     public LintMessage(String ruleId, Severity severity,
                        String message, Location loc, String nodeType) {

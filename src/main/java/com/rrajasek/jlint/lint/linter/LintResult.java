@@ -32,4 +32,8 @@ public class LintResult {
     public String getSource() {
         return source;
     }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 }

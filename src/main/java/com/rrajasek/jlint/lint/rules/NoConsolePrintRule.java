@@ -1,6 +1,8 @@
 package com.rrajasek.jlint.lint.rules;
 
 import com.rrajasek.jlint.java.Java8Parser;
+import com.rrajasek.jlint.lint.linter.LintReport;
+import com.rrajasek.jlint.lint.linter.Location;
 import com.rrajasek.jlint.lint.linter.RuleContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -17,9 +19,22 @@ public class NoConsolePrintRule implements Rule {
             super("MethodInvocation", ruleContext);
         }
 
+        private Location methodInvocationLocation(Java8Parser.MethodInvocationContext methodInvocationContext) {
+            Location location = new Location();
+            location.line = methodInvocationContext.start.getLine();
+            location.column = methodInvocationContext.start.getCharPositionInLine();
+
+            return location;
+        }
+
         private void checkStatement(Java8Parser.MethodInvocationContext methodInvocationContext) {
             if (SYS_OUT_PRINT_PATTERN.matcher(methodInvocationContext.getText()).matches()) {
-//                System.out.println("Rule violation! No console prints");
+                LintReport report = new LintReport();
+                report.setMessage("System.out.print* statements not allowed");
+                report.setLocation(methodInvocationLocation(methodInvocationContext));
+                report.setNodeType(getNodeType());
+
+                ruleContext.report(report);
             }
         }
 

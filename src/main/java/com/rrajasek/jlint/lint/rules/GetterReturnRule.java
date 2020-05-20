@@ -1,6 +1,8 @@
 package com.rrajasek.jlint.lint.rules;
 
 import com.rrajasek.jlint.java.Java8Parser;
+import com.rrajasek.jlint.lint.linter.LintReport;
+import com.rrajasek.jlint.lint.linter.Location;
 import com.rrajasek.jlint.lint.linter.RuleContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -15,8 +17,26 @@ public class GetterReturnRule implements Rule {
             super("NormalClassDeclaration", ruleContext);
         }
 
+        private Location functionDeclarationLocation(Java8Parser.MethodHeaderContext methodHeaderContext) {
+            Location location = new Location();
+            location.line = methodHeaderContext.start.getLine();
+            location.column = methodHeaderContext.start.getCharPositionInLine();
+
+            return location;
+        }
+
+        private void report(Java8Parser.MethodHeaderContext method, String violation) {
+            LintReport report = new LintReport();
+            report.setMessage(violation + "InNormalClassDeclaration");
+            report.setLocation(functionDeclarationLocation(method));
+            report.setNodeType(getNodeType());
+
+            ruleContext.report(report);
+        }
+
         private void reportList(List<Java8Parser.MethodHeaderContext> methods, String violation) {
-//            this.ruleContext.report();
+            for (Java8Parser.MethodHeaderContext method : methods)
+                report(method, violation);
         }
 
         private boolean isGetter(TerminalNode terminalNode) {

@@ -48,6 +48,7 @@ public class CommandLineEngine {
                 String text = new String(Files.readAllBytes(file.toPath()), Charset.defaultCharset()) ;
                 LintInput input = new LintInput();
                 input.setText(text);
+                input.setFilePath(file.getPath());
                 LintResult res = verifyText(input);
                 results.add(res);
             } catch (IOException ex) {
@@ -61,9 +62,12 @@ public class CommandLineEngine {
 
 
     private LintResult verifyText(LintInput input) {
+        String filePath = input.getFilePath() == null ? "<text>" : input.getFilePath();
         String text = input.getText();
         List<LintMessage> lintMessageList = linter.verify(text);
-        return new LintResult(lintMessageList);
+        LintResult result = new LintResult(lintMessageList);
+        result.setFilePath(filePath);
+        return result;
     }
 
 

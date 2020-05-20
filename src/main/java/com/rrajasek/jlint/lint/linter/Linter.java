@@ -26,25 +26,6 @@ public class Linter {
         return this.verifyWithoutProcessors(text);
     }
 
-//    public void parseFile(String s) {
-//        try {
-//            //
-//            CharStream antlrInputStream = CharStreams.fromFileName(s);
-//            Java8Lexer java8Lexer = new Java8Lexer(antlrInputStream);
-//            CommonTokenStream tokenStream = new CommonTokenStream(java8Lexer);
-//            Java8Parser java8Parser = new Java8Parser(tokenStream);
-//            ParseTree compilationUnit = java8Parser.compilationUnit();
-//
-//            ParseTreeWalker walker = new ParseTreeWalker();
-//            LinterListener linterListener = new LinterListener();
-//
-//            walker.walk(linterListener, compilationUnit);
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     public ParseResult parse(String text) {
         CharStream textStream = CharStreams.fromString(text);
         Java8Lexer java8Lexer = new Java8Lexer(textStream);

@@ -10,6 +10,9 @@ repositories {
 }
 
 dependencies {
+    // CLI parsing
+    compile 'info.picocli:picocli:4.3.2'
+
     // AST parsing
     compile group: 'org.antlr', name: 'antlr4', version: '4.8'
 
@@ -21,7 +24,6 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.7'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.7'
     compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.7'
-
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

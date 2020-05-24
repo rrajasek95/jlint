@@ -2,6 +2,7 @@ package com.rrajasek.jlint.lint.scope;
 
 import com.rrajasek.jlint.java.Java8Parser;
 import com.rrajasek.jlint.java.Java8ParserBaseListener;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 
 public class ReferencePhaseListener extends Java8ParserBaseListener {
@@ -20,6 +21,18 @@ public class ReferencePhaseListener extends Java8ParserBaseListener {
             ((Variable) namedScope).markAsUsed();
         }
         super.enterExpressionName(ctx);
+    }
+
+    @Override
+    public void enterTypeName(Java8Parser.TypeNameContext ctx) {
+        if (currentScope != null) {
+            NamedScope namedScope = currentScope.resolve(ctx.Identifier().getText());
+            if (namedScope != null && "variable".equals(namedScope.getType())) {
+                ((Variable) namedScope).markAsUsed();
+            }
+        }
+
+        super.enterTypeName(ctx);
     }
 
     @Override

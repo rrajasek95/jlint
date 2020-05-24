@@ -16,6 +16,7 @@ public class PredefinedRules {
         predefinedRules.put("no-empty", new NoEmptyRule());
         predefinedRules.put("no-continue", new NoContinueRule());
         predefinedRules.put("no-console-print", new NoConsolePrintRule());
+        predefinedRules.put("no-unused-vars", new NoUnusedVariablesRule());
     }
     public static Map<String, Rule> getPredefinedRules() {
         return predefinedRules;

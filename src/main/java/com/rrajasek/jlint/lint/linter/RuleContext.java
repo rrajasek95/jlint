@@ -1,6 +1,7 @@
 package com.rrajasek.jlint.lint.linter;
 
-import java.util.ArrayList;
+import com.rrajasek.jlint.lint.scope.Scope;
+
 import java.util.List;
 
 public class RuleContext implements LinterTraversalContext {
@@ -41,8 +42,8 @@ public class RuleContext implements LinterTraversalContext {
     }
 
     @Override
-    public void getScope() {
-        ctx.getScope();
+    public Scope getScope() {
+        return ctx.getScope();
     }
 
     @Override

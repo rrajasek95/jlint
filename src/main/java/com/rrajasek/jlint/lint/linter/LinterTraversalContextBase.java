@@ -1,6 +1,13 @@
 package com.rrajasek.jlint.lint.linter;
 
+import com.rrajasek.jlint.lint.scope.Scope;
+
 public class LinterTraversalContextBase implements LinterTraversalContext {
+    private Scope scope;
+
+    public LinterTraversalContextBase(Scope scope) {
+        this.scope = scope;
+    }
     public void getAncestors() {
 
     }
@@ -15,8 +22,8 @@ public class LinterTraversalContextBase implements LinterTraversalContext {
     }
 
     @Override
-    public void getScope() {
-
+    public Scope getScope() {
+        return scope;
     }
 
     @Override

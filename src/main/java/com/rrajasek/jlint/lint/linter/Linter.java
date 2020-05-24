@@ -4,6 +4,8 @@ import com.rrajasek.jlint.java.Java8Lexer;
 import com.rrajasek.jlint.java.Java8Parser;
 import com.rrajasek.jlint.lint.rules.Rule;
 import com.rrajasek.jlint.lint.rules.RuleListener;
+import com.rrajasek.jlint.lint.scope.DefinitionPhaseListener;
+import com.rrajasek.jlint.lint.scope.ReferencePhaseListener;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -52,6 +54,15 @@ public class Linter {
     private List<LintMessage> runRules(SourceCode sourceCode, Map<String, String> configuredRules) {
         RuleRegistry ruleRegistry = new RuleRegistry();
         ParseTreeWalker walker = new ParseTreeWalker();
+
+
+        DefinitionPhaseListener definitionPhaseListener = new DefinitionPhaseListener();
+        walker.walk(definitionPhaseListener, sourceCode.getAst());
+
+        ReferencePhaseListener referencePhaseListener = new ReferencePhaseListener(
+                definitionPhaseListener.getScopes());
+        walker.walk(referencePhaseListener, sourceCode.getAst());
+
         LinterListener linterListener = new LinterListener();
         configuredRules.put("accessor-pairs", "Blah");
         configuredRules.put("no-constant-condition", "Bluh");
@@ -60,8 +71,9 @@ public class Linter {
         configuredRules.put("no-empty", "TEST");
         configuredRules.put("no-console-print", "SSSDSD");
         configuredRules.put("no-continue", "SDSDSDSDSDSD");
+        configuredRules.put("no-unused-vars", "SDSDSDSDSDSDSSD");
 
-        LinterTraversalContext linterTraversalContext = new LinterTraversalContextBase();
+        LinterTraversalContext linterTraversalContext = new LinterTraversalContextBase(definitionPhaseListener.getCurrentScope());
 
         List<LintMessage> messages = new ArrayList<>();
         for (Map.Entry<String, String> ruleEntry: configuredRules.entrySet()) {

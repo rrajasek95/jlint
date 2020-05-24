@@ -9,6 +9,7 @@ public class SourceCode {
     public ParseTree getAst() {
         return ast;
     }
+
     public String getText() { return text; }
     public SourceCode(String text, ParseTree ast) {
         this.text = text;

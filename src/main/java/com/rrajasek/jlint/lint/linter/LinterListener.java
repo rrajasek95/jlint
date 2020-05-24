@@ -9,10 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class LinterListener extends Java8ParserBaseListener {
-    private HashMap<String, List<RuleListener>> registeredListeners = new HashMap<>();
+    private final HashMap<String, List<RuleListener>> registeredListeners = new HashMap<>();
 
     public void register(String selector, RuleListener listener) {
-        List<RuleListener> listeners = registeredListeners.computeIfAbsent(selector + "Context", (k) -> new ArrayList<>());
+        String key = selector + "Context";
+        if (listener.isExit()) {
+            key = key + ":exit";
+        }
+        List<RuleListener> listeners = registeredListeners.computeIfAbsent(key, (k) -> new ArrayList<>());
         listeners.add(listener);
     }
 
@@ -35,6 +39,8 @@ public class LinterListener extends Java8ParserBaseListener {
 
     @Override
     public void exitEveryRule(ParserRuleContext ctx) {
+        String selector = ctx.getClass().getSimpleName();
+        applyOnSelector(selector + ":exit", ctx); // Apply only exit selectors
         super.exitEveryRule(ctx);
     }
 }
